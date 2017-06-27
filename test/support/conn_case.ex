@@ -26,6 +26,8 @@ defmodule Dblog.ConnCase do
       import Ecto.Query
 
       import Dblog.Router.Helpers
+      import Dblog.Factory
+      import Dblog.Helpers
 
       # The default endpoint for testing
       @endpoint Dblog.Endpoint

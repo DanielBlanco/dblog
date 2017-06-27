@@ -58,7 +58,14 @@ defmodule Dblog.ModelCase do
       true
   """
   def errors_on(struct, data) do
-    struct.__struct__.changeset(struct, data)
+    struct.__struct__.changeset(struct, data) |> errors_on()
+  end
+
+  @doc """
+  Helper for returning list of errors in changeset when passed certain data.
+  """
+  def errors_on(changeset) do
+    changeset
     |> Ecto.Changeset.traverse_errors(&Dblog.ErrorHelpers.translate_error/1)
     |> Enum.flat_map(fn {key, errors} -> for msg <- errors, do: {key, msg} end)
   end
