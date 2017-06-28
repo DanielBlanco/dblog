@@ -20,7 +20,8 @@ defmodule Dblog.Router do
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", Dblog do
-  #   pipe_through :api
-  # end
+  scope "/api", Dblog.API, as: :api do
+    pipe_through :api
+    resources "/posts", PostController
+  end
 end

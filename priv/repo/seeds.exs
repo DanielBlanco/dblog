@@ -9,3 +9,10 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
+
+alias Dblog.Repo
+alias Dblog.Post
+
+Repo.insert!(%Post{title: "Post 1", published_at: Timex.now()})
+Repo.insert!(%Post{title: "Post 2", published_at: Timex.now()})
+Repo.insert!(%Post{title: "Post 3", published_at: Timex.now()})
