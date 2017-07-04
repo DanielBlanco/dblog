@@ -1,26 +1,26 @@
 var _user$project$Main$subscriptions = function (model) {
 	return _elm_lang$core$Platform_Sub$none;
 };
-var _user$project$Main$initialModel = {articleListModel: _user$project$Components_ArticleList$initialModel};
+var _user$project$Main$initialModel = {postListModel: _user$project$Components_PostList$initialModel};
 var _user$project$Main$init = {ctor: '_Tuple2', _0: _user$project$Main$initialModel, _1: _elm_lang$core$Platform_Cmd$none};
 var _user$project$Main$Model = function (a) {
-	return {articleListModel: a};
+	return {postListModel: a};
 };
-var _user$project$Main$ArticleListMsg = function (a) {
-	return {ctor: 'ArticleListMsg', _0: a};
+var _user$project$Main$PostListMsg = function (a) {
+	return {ctor: 'PostListMsg', _0: a};
 };
 var _user$project$Main$update = F2(
 	function (msg, model) {
 		var _p0 = msg;
-		var _p1 = A2(_user$project$Components_ArticleList$update, _p0._0, model.articleListModel);
+		var _p1 = A2(_user$project$Components_PostList$update, _p0._0, model.postListModel);
 		var updatedModel = _p1._0;
 		var cmd = _p1._1;
 		return {
 			ctor: '_Tuple2',
 			_0: _elm_lang$core$Native_Utils.update(
 				model,
-				{articleListModel: updatedModel}),
-			_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$Main$ArticleListMsg, cmd)
+				{postListModel: updatedModel}),
+			_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$Main$PostListMsg, cmd)
 		};
 	});
 var _user$project$Main$view = function (model) {
@@ -35,8 +35,8 @@ var _user$project$Main$view = function (model) {
 			ctor: '::',
 			_0: A2(
 				_elm_lang$html$Html$map,
-				_user$project$Main$ArticleListMsg,
-				_user$project$Components_ArticleList$view(model.articleListModel)),
+				_user$project$Main$PostListMsg,
+				_user$project$Components_PostList$view(model.postListModel)),
 			_1: {ctor: '[]'}
 		});
 };

@@ -1,6 +1,6 @@
 module Main exposing (..)
 
-import Components.ArticleList as ArticleList
+import Components.PostList as PostList
 import Html exposing (Html, div, program, text)
 import Html.Attributes exposing (class)
 
@@ -9,16 +9,16 @@ import Html.Attributes exposing (class)
 
 
 type alias Model =
-    { articleListModel : ArticleList.Model }
+    { postListModel : PostList.Model }
 
 
 type Msg
-    = ArticleListMsg ArticleList.Msg
+    = PostListMsg PostList.Msg
 
 
 initialModel : Model
 initialModel =
-    { articleListModel = ArticleList.initialModel }
+    { postListModel = PostList.initialModel }
 
 
 init : ( Model, Cmd Msg )
@@ -33,13 +33,13 @@ init =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        ArticleListMsg articleMsg ->
+        PostListMsg postMsg ->
             let
                 ( updatedModel, cmd ) =
-                    ArticleList.update articleMsg model.articleListModel
+                    PostList.update postMsg model.postListModel
             in
-            ( { model | articleListModel = updatedModel }
-            , Cmd.map ArticleListMsg cmd
+            ( { model | postListModel = updatedModel }
+            , Cmd.map PostListMsg cmd
             )
 
 
@@ -59,7 +59,7 @@ subscriptions model =
 view : Model -> Html Msg
 view model =
     div [ class "elm-app" ]
-        [ Html.map ArticleListMsg (ArticleList.view model.articleListModel) ]
+        [ Html.map PostListMsg (PostList.view model.postListModel) ]
 
 
 
