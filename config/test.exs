@@ -9,11 +9,12 @@ config :dblog, DblogWeb.Endpoint,
 # Print only warnings and errors during test
 config :logger, level: :warn
 
-# Configure your database
-config :dblog, Dblog.Repo,
-  adapter: Ecto.Adapters.Postgres,
-  username: "postgres",
-  password: "postgres",
-  database: "dblog_test",
-  hostname: "localhost",
-  pool: Ecto.Adapters.SQL.Sandbox
+# Hashing passswords is intentionally expensive. Doing this extra bit of work
+# makes our passwords harder to crack, but we don't need all of that security in
+# the test environment. So we are easing up the number of hashing rounds to
+# speed up our test suite.
+# config :argon2_elixir, t_cost: 1, m_cost: 8
+
+# Finally import the config/test.secret.exs
+# which should be versioned separately.
+import_config "test.secret.exs"
