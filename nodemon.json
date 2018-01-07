@@ -1,9 +1,0 @@
-{
-    "restartable": "rs",
-    "verbose": true,
-    "watch": ["web/elm/"],
-    "execMap": {
-        "elm": "elm-make web/elm/Main.elm --yes --warn --debug --output=web/static/js/elm.js"
-    },
-    "ext": "elm"
-}
