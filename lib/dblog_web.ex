@@ -22,6 +22,7 @@ defmodule DblogWeb do
       use Phoenix.Controller, namespace: DblogWeb
       import Plug.Conn
       import DblogWeb.Router.Helpers
+      import DblogWeb.Controller.Helpers
       import DblogWeb.Gettext
     end
   end
