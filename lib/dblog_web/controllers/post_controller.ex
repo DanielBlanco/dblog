@@ -6,7 +6,7 @@ defmodule DblogWeb.PostController do
 
   action_fallback DblogWeb.FallbackController
   plug :require_existing_author
-  plug :authorize_post when action in [:edit, :update, :delete]
+  plug :authorize_post when action in [:update, :delete]
 
   def index(conn, _params) do
     posts = Blog.list_posts()
@@ -28,16 +28,16 @@ defmodule DblogWeb.PostController do
     render(conn, "show.json", post: post)
   end
 
-  def update(conn, %{"id" => id, "post" => post_params}) do
-    post = Blog.get_post!(id)
+  def update(conn, %{"post" => post_params}) do
+    post = conn.assigns.post
 
     with {:ok, %Post{} = post} <- Blog.update_post(post, post_params) do
       render(conn, "show.json", post: post)
     end
   end
 
-  def delete(conn, %{"id" => id}) do
-    post = Blog.get_post!(id)
+  def delete(conn, _) do
+    post = conn.assigns.post
     with {:ok, %Post{}} <- Blog.delete_post(post) do
       send_resp(conn, :no_content, "")
     end
