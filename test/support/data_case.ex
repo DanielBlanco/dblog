@@ -22,6 +22,7 @@ defmodule Dblog.DataCase do
       import Ecto.Changeset
       import Ecto.Query
       import Dblog.DataCase
+      import Dblog.Factory
     end
   end
 

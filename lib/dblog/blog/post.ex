@@ -1,12 +1,13 @@
 defmodule Dblog.Blog.Post do
   use Dblog.Schema
   import Ecto.Changeset
-  alias Dblog.Blog.Post
+  alias Dblog.Blog.{Post, Author}
 
 
   schema "posts" do
     field :body, :string
     field :title, :string
+    belongs_to :author, Author
 
     timestamps()
   end

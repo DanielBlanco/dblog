@@ -20,7 +20,8 @@ defmodule DblogWeb.UserControllerTest do
   describe "index" do
     test "lists all users", %{conn: conn} do
       conn = get conn, user_path(conn, :index)
-      assert json_response(conn, 200)["data"] == []
+      json = json_response(conn, 200)
+      assert length(json["data"]) == 1
     end
   end
 

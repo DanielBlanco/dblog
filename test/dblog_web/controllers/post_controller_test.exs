@@ -4,12 +4,18 @@ defmodule DblogWeb.PostControllerTest do
   alias Dblog.Blog
   alias Dblog.Blog.Post
 
-  @create_attrs %{body: "some body", title: "some title"}
+  @create_attrs %{
+    body: "some body",
+    title: "some title"
+  }
   @update_attrs %{body: "some updated body", title: "some updated title"}
   @invalid_attrs %{body: nil, title: nil}
 
   def fixture(:post) do
-    {:ok, post} = Blog.create_post(@create_attrs)
+    {:ok, post} =
+      get_dblanco!() 
+      |> Blog.get_or_create_author!()
+      |> Blog.create_post(@create_attrs)
     post
   end
 

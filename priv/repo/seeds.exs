@@ -9,3 +9,11 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
+#
+alias Dblog.Accounts
+
+%{
+  id: "28af3599-4929-4754-906c-e0e08f8763ff",
+  name: "Daniel Blanco"
+}
+|> Accounts.create_user()

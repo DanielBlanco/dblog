@@ -19,7 +19,9 @@ defmodule DblogWeb.ConnCase do
     quote do
       # Import conveniences for testing with connections
       use Phoenix.ConnTest
+      import Dblog.Factory
       import DblogWeb.Router.Helpers
+      import DblogWeb.ConnCase.Helpers
 
       # The default endpoint for testing
       @endpoint DblogWeb.Endpoint
@@ -32,7 +34,8 @@ defmodule DblogWeb.ConnCase do
     unless tags[:async] do
       Ecto.Adapters.SQL.Sandbox.mode(Dblog.Repo, {:shared, self()})
     end
-    {:ok, conn: Phoenix.ConnTest.build_conn()}
+    {:ok, dblanco} = DblogWeb.ConnCase.Helpers.insert_dblanco()
+    {:ok, conn: Phoenix.ConnTest.build_conn(), dblanco: dblanco}
   end
 
 end

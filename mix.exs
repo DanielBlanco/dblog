@@ -20,7 +20,11 @@ defmodule Dblog.Mixfile do
   def application do
     [
       mod: {Dblog.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [
+        :logger, :runtime_tools, :comeonin, :cors_plug, :guardian,
+        :secure_random, :hackney, :poison, :timex, :timex_ecto,
+        :ex_utils
+      ]
     ]
   end
 
@@ -40,7 +44,23 @@ defmodule Dblog.Mixfile do
       {:phoenix_html, "~> 2.10"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:gettext, "~> 0.11"},
-      {:cowboy, "~> 1.0"}
+      {:cowboy, "~> 1.0"},
+      {:cowlib, "~> 1.0"},
+      {:cors_plug, "~> 1.2"},
+      {:mix_test_watch, "~> 0.5", only: :dev},
+      {:comeonin, "~> 4.0"},
+      {:argon2_elixir, "~> 1.2"},
+      {:poison, "~> 3.1"},
+      {:ex_machina, "~> 2.1", only: :test},
+      {:secure_random, "~> 0.5.1"},
+      {:guardian, "~> 0.14"},
+      {:distillery, "~> 1.5.2"},
+      {:hackney, "~> 1.10.1"},
+      {:timex, "~> 3.1.24"},
+      {:timex_ecto, "~> 3.2.1"},
+      {:ex_utils, "~> 0.1.7"},
+      {:atomic_map, "~> 0.9"},
+      {:ex_doc, "~> 0.18", only: :dev, runtime: false},
     ]
   end
 
