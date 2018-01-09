@@ -13,6 +13,7 @@ defmodule DblogWeb.PostView do
   def render("post.json", %{post: post}) do
     %{id: post.id,
       title: post.title,
-      body: post.body}
+      body: post.body
+    }
   end
 end

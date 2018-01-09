@@ -61,6 +61,10 @@ defmodule Dblog.Mixfile do
       {:ex_utils, "~> 0.1.7"},
       {:atomic_map, "~> 0.9"},
       {:ex_doc, "~> 0.18", only: :dev, runtime: false},
+      {:absinthe, "~> 1.4.0"},
+      {:absinthe_plug, "~> 1.4.0"},
+      {:absinthe_ecto, "~> 0.1.3"},
+      {:faker, "~> 0.9"}
     ]
   end
 

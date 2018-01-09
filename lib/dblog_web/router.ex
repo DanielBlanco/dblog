@@ -26,4 +26,18 @@ defmodule DblogWeb.Router do
     resources "/users", UserController, except: [:new, :edit]
     resources "/posts", PostController, except: [:new, :edit]
   end
+
+  # GraphQL setup
+  # plug Plug.Parsers,
+  #      parsers: [:urlencoded, :multipart, :json, Absinthe.Plug.Parser],
+  #      pass: ["*/*"],
+  #      json_decoder: Poison
+  forward "/graphql",
+          Absinthe.Plug,
+          schema: DblogWeb.Schema
+
+  forward "/graphiql",
+          Absinthe.Plug.GraphiQL,
+          schema: DblogWeb.Schema,
+          interface: :simple
 end

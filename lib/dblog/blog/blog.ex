@@ -10,6 +10,37 @@ defmodule Dblog.Blog do
   alias Dblog.Accounts
 
   @doc """
+  Returns the list of posts for an author in a given date.
+
+  ## Examples
+
+      iex> list_posts(%Author{}, %{date: "2018-01-01"})
+      [%Post{}, ...]
+
+  TODO: Change inserted_at for published_at.
+  """
+  def list_posts(author, %{date: date}) do
+    from(p in Post,
+      where: p.author_id == ^author.id,
+      where: fragment("date_trunc('day', ?)", p.inserted_at) == type(^date, :date))
+    |> Repo.all
+  end
+
+  @doc """
+  Returns the list of posts for an author.
+
+  ## Examples
+
+      iex> list_posts(%Author{}, %{})
+      [%Post{}, ...]
+
+  """
+  def list_posts(author, _) do
+    from(t in Post, where: t.author_id == ^author.id)
+    |> Repo.all
+  end
+
+  @doc """
   Returns the list of posts.
 
   ## Examples
@@ -39,6 +70,25 @@ defmodule Dblog.Blog do
   """
   def get_post!(id) do
     Repo.get!(Post, id)
+    |> Repo.preload(author: :user)
+  end
+
+  @doc """
+  Gets a single post.
+
+  Returns `nil` if the Post does not exist.
+
+  ## Examples
+
+      iex> get_post(123)
+      %Post{}
+
+      iex> get_post(456)
+      nil
+
+  """
+  def get_post(id) do
+    Repo.get(Post, id)
     |> Repo.preload(author: :user)
   end
 
@@ -136,6 +186,22 @@ defmodule Dblog.Blog do
 
   """
   def get_author!(id), do: Repo.get!(Author, id)
+
+  @doc """
+  Gets a single author.
+
+  Returns `nil` if the Author does not exist.
+
+  ## Examples
+
+      iex> get_author(123)
+      %Author{}
+
+      iex> get_author(456)
+      nil
+
+  """
+  def get_author(id), do: Repo.get(Author, id)
 
   @doc """
   Creates a author.
