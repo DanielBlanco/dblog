@@ -13,7 +13,7 @@ config :logger, level: :warn
 # makes our passwords harder to crack, but we don't need all of that security in
 # the test environment. So we are easing up the number of hashing rounds to
 # speed up our test suite.
-# config :argon2_elixir, t_cost: 1, m_cost: 8
+config :argon2_elixir, t_cost: 1, m_cost: 8
 
 # Finally import the config/test.secret.exs
 # which should be versioned separately.

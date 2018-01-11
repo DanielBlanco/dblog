@@ -6,9 +6,25 @@ defmodule Dblog.AccountsTest do
   describe "users" do
     alias Dblog.Accounts.User
 
-    @valid_attrs %{name: "some name"}
-    @update_attrs %{name: "some updated name"}
-    @invalid_attrs %{name: nil}
+    @valid_attrs %{
+      name: "some name",
+      credential: %{
+        email: "some@test.com",
+        password: "sekret1"
+      }
+    }
+    @update_attrs %{
+      name: "some updated name",
+      # To change the email, the user needs to send the password.
+      credential: %{
+        email: "other@impress.com",
+        password: "sekret1"
+      }
+    }
+    @invalid_attrs %{
+      name: nil,
+      credential: %{ email: nil }
+    }
 
     def user_fixture(attrs \\ %{}) do
       {:ok, user} =
@@ -16,7 +32,7 @@ defmodule Dblog.AccountsTest do
         |> Enum.into(@valid_attrs)
         |> Accounts.create_user()
 
-      user
+      user |> Dblog.Repo.preload(:credential)
     end
 
     test "list_users/0 returns all users" do
@@ -61,5 +77,12 @@ defmodule Dblog.AccountsTest do
       user = user_fixture()
       assert %Ecto.Changeset{} = Accounts.change_user(user)
     end
+
+    test "authenticate/2 with valid credentials returns the user" do
+      user = user_fixture()
+      assert {:ok, found_user} = Accounts.authenticate("some@test.com", "sekret1")
+      assert user.credential.email == found_user.credential.email
+    end
   end
+
 end

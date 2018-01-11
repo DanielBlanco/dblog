@@ -30,4 +30,17 @@ defmodule DblogWeb.Resolvers.Blog do
         {:ok, post}
     end
   end
+
+  @doc """
+  Crates a new post.
+  """
+  def create_post(_parent, args, %{context: %{current_user: user}}) do
+    user
+    |> Blog.get_or_create_author!()
+    |> Blog.create_post(args)
+  end
+  def create_post(_parent, _args, _resolution) do
+    {:error, "Access denied"}
+  end
+
 end

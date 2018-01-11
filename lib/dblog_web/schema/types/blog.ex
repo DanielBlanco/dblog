@@ -1,14 +1,7 @@
-defmodule DblogWeb.Schema.Types do
+defmodule DblogWeb.Schema.Type.Blog do
   use Absinthe.Schema.Notation
   use Absinthe.Ecto, repo: DBlog.Repo
   alias DblogWeb.Resolvers
-
-  object :user do
-    field :id, :id
-    field :name, :string
-    field :active, :boolean
-    field :author, :author
-  end
 
   object :author do
     field :id, :id
@@ -27,4 +20,5 @@ defmodule DblogWeb.Schema.Types do
     field :author, :author
     field :inserted_at, :naive_datetime
   end
+
 end

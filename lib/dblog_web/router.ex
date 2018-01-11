@@ -13,6 +13,18 @@ defmodule DblogWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :graphql do
+    plug DblogWeb.Plug.Graphql.Context
+  end
+
+  # This plug will look for a Guardian token in the session in the default
+  # location. Then it will attempt to load the resource found in the JWT.
+  # If it doesn't find a JWT in the default location it doesn't do anything
+  pipeline :api_auth do
+    plug Guardian.Plug.VerifyHeader, realm: "Bearer"
+    plug Guardian.Plug.LoadResource
+  end
+
   scope "/", DblogWeb do
     pipe_through :browser # Use the default browser stack
 
@@ -27,17 +39,19 @@ defmodule DblogWeb.Router do
     resources "/posts", PostController, except: [:new, :edit]
   end
 
-  # GraphQL setup
-  # plug Plug.Parsers,
-  #      parsers: [:urlencoded, :multipart, :json, Absinthe.Plug.Parser],
-  #      pass: ["*/*"],
-  #      json_decoder: Poison
-  forward "/graphql",
-          Absinthe.Plug,
-          schema: DblogWeb.Schema
+  scope "/graphql" do
+    pipe_through [:api, :graphql, :api_auth]
 
-  forward "/graphiql",
-          Absinthe.Plug.GraphiQL,
-          schema: DblogWeb.Schema,
-          interface: :simple
+    # plug Plug.Parsers,
+    #      parsers: [:urlencoded, :multipart, :json, Absinthe.Plug.Parser],
+    #      pass: ["*/*"],
+    #      json_decoder: Poison
+
+    forward "/graphiql", Absinthe.Plug.GraphiQL,
+            schema: DblogWeb.Schema
+
+    forward "/",
+            Absinthe.Plug,
+            schema: DblogWeb.Schema
+  end
 end

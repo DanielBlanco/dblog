@@ -7,7 +7,17 @@ defmodule Dblog.Factory do
     %Dblog.Accounts.User{
       id: uuid(),
       name: sequence("Akali"),
-      active: true
+      active: true,
+      credential: build(:credential)
+    }
+  end
+
+  def credential_factory do
+    %Dblog.Accounts.Credential{
+      id: uuid(),
+      password: nil,
+      password_hash: hash_password("zuperzekret"),
+      email: sequence(:email, &"email-#{&1}@example.com")
     }
   end
 
@@ -51,9 +61,9 @@ defmodule Dblog.Factory do
   #   Base.encode16(:crypto.strong_rand_bytes(8))
   # end
 
-  # defp hash_password(password) do
-  #   Comeonin.Argon2.hashpwsalt(password)
-  # end
+  defp hash_password(password) do
+    Comeonin.Argon2.hashpwsalt(password)
+  end
 
   defp uuid, do: UUID.uuid4()
 end

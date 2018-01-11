@@ -3,10 +3,11 @@ defmodule Dblog.Accounts do
   The Accounts context.
   """
 
+  import Comeonin.Argon2, only: [checkpw: 2, dummy_checkpw: 0]
   import Ecto.Query, warn: false
   alias Dblog.Repo
 
-  alias Dblog.Accounts.User
+  alias Dblog.Accounts.{Credential, User}
 
   @doc """
   Returns the list of users.
@@ -19,6 +20,7 @@ defmodule Dblog.Accounts do
   """
   def list_users do
     Repo.all(User)
+    |> Repo.preload(:credential)
   end
 
   @doc """
@@ -35,7 +37,10 @@ defmodule Dblog.Accounts do
       ** (Ecto.NoResultsError)
 
   """
-  def get_user!(id), do: Repo.get!(User, id)
+  def get_user!(id) do
+    Repo.get!(User, id)
+    |> Repo.preload(:credential)
+  end
 
   @doc """
   Gets a single user.
@@ -51,7 +56,10 @@ defmodule Dblog.Accounts do
       nil
 
   """
-  def get_user(id), do: Repo.get(User, id)
+  def get_user(id) do
+    Repo.get(User, id)
+    |> Repo.preload(:credential)
+  end
 
   @doc """
   Creates a user.
@@ -68,6 +76,7 @@ defmodule Dblog.Accounts do
   def create_user(attrs \\ %{}) do
     %User{}
     |> User.changeset(attrs)
+    |> Ecto.Changeset.cast_assoc(:credential, with: &Credential.changeset/2)
     |> Repo.insert()
   end
 
@@ -86,6 +95,7 @@ defmodule Dblog.Accounts do
   def update_user(%User{} = user, attrs) do
     user
     |> User.changeset(attrs)
+    |> Ecto.Changeset.cast_assoc(:credential, with: &Credential.changeset/2)
     |> Repo.update()
   end
 
@@ -116,5 +126,47 @@ defmodule Dblog.Accounts do
   """
   def change_user(%User{} = user) do
     User.changeset(user, %{})
+  end
+
+  @doc """
+  Authenticates an user.
+
+  If we find a matching user, we return the user.
+
+  If the password doesn't match or the user does not exists, we return
+  :unauthorized.
+
+  When a user isn't found, we use comeonin's `Comeonin.Argon2.dummy_checkpw/0`
+  function to simulate a password check with variable timing. This hardens our
+  authentication layer against timing attacks, which is crucial to keeping our
+  applications secure.
+
+  ## Examples
+
+      iex> authenticate("some@email.com", "password")
+      {:ok, %User{}}
+
+  """
+  def authenticate(email, password) do
+    user = find_user_to_authenticate(email)
+    cond do
+      user && checkpw(password, user.credential.password_hash) ->
+        {:ok, user}
+      user ->
+        {:error, :unauthorized}
+      true ->
+        dummy_checkpw()
+        {:error, :unauthorized}
+    end
+  end
+
+  defp find_user_to_authenticate(email) do
+    query =
+      from u in User,
+        inner_join: c in assoc(u, :credential),
+        where: c.email == ^email
+
+    Repo.one(query)
+    |> Repo.preload(:credential)
   end
 end
