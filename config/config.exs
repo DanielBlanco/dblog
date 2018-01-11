@@ -48,7 +48,7 @@ config :guardian, Guardian,
   allowed_drift: 2000,
   verify_issuer: true, # optional
   secret_key: "hRhFmwOfWggIsqIhAUubDW15VzThjP6IjYXesnvwF1rQID8FPObcR0n47AhUkerL",
-  serializer: DBlog.GuardianSerializer,
+  serializer: Dblog.GuardianSerializer,
   permissions: %{
     default: [:read, :write]
   }

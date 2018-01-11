@@ -1,6 +1,8 @@
 defmodule DblogWeb.Schema.Middleware.BinaryId do
   @doc """
   GraphQL binary id checker.
+
+  If the arguments don't have an ID to check, just continue.
   """
   @behaviour Absinthe.Middleware
 
@@ -17,7 +19,7 @@ defmodule DblogWeb.Schema.Middleware.BinaryId do
     case UUID.info(id) do
       {:error, _} ->
         resolution
-        |> Absinthe.Resolution.put_result({:error, "ID #{id} not found"})
+        |> Absinthe.Resolution.put_result({:error, "Invalid ID #{id}"})
       _ ->
         resolution
     end

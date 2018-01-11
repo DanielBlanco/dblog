@@ -40,7 +40,7 @@ defmodule DblogWeb.Resolvers.Blog do
     |> Blog.create_post(args)
   end
   def create_post(_parent, _args, _resolution) do
-    {:error, "Access denied"}
+    {:error, "Oops! Authentication error."}
   end
 
 end

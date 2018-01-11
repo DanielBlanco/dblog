@@ -1,6 +1,24 @@
 defmodule DblogWeb.Resolvers.Accounts do
   alias Dblog.Accounts
 
+  @doc """
+  If email and password are not available call authenticate/2 anyway to use
+  comeonin's `dummy_checkpw/0` function to simulate a password check.
+
+  Read more at Dblog.Accounts.authenticate/2
+  """
+  def login(%{email: email, password: password}, _info) do
+    with {:ok, user} <- Accounts.authenticate(email, password),
+         {:ok, jwt, claims } <- Guardian.encode_and_sign(user, :access)
+    do
+      {:ok, %{token: jwt, exp: claims["exp"], user: user}}
+    end
+  end
+  def login(_, _), do: Accounts.authenticate('invalid-email', '')
+
+  @doc """
+  List users in the system.
+  """
   def list_users(_args, _info) do
     {:ok, Accounts.list_users()}
   end

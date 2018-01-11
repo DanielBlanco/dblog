@@ -7,7 +7,7 @@ defmodule DblogWeb.Schema.Type.Account do
     field :name, :string
     field :active, :boolean
     field :author, :author
-    field :email, :string
+    # field :email, :string
   end
 
   @desc "A way to update an user"
@@ -15,5 +15,11 @@ defmodule DblogWeb.Schema.Type.Account do
     field :name, :string
     field :email, :string
     field :password, :string
+  end
+
+  object :session do
+    field :token, :string
+    field :exp, :string
+    field :user, :user
   end
 end
