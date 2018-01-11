@@ -17,6 +17,16 @@ defmodule DblogWeb.Resolvers.Accounts do
   def login(_, _), do: Accounts.authenticate('invalid-email', '')
 
   @doc """
+  Logouts the current user.
+
+  TODO: use GuardianDB? do I really need to revoke tokens?
+  """
+  def logout(_args, %{context: %{current_user: _, jwt: _, claims: _}}) do
+    {:ok, "Bye, have a nice day!"}
+  end
+  def logout(_args, _resolution), do: {:error, "Oops! Authentication error."}
+
+  @doc """
   List users in the system.
   """
   def list_users(_args, _info) do

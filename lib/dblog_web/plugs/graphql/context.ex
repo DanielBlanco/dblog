@@ -12,7 +12,16 @@ defmodule DblogWeb.Plug.Graphql.Context do
     case Guardian.Plug.current_resource(conn) do
       nil -> conn
       user ->
-        put_private(conn, :absinthe, %{context: %{current_user: user}})
+        context = build_context(conn, user)
+        put_private(conn, :absinthe, %{context: context})
     end
+  end
+
+  defp build_context(conn, user) do
+     %{
+       current_user: user,
+       jwt: Guardian.Plug.current_token(conn),
+       claims: Guardian.Plug.claims(conn)
+     }
   end
 end

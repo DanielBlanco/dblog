@@ -40,7 +40,7 @@ defmodule DblogWeb.Router do
   end
 
   scope "/graphql" do
-    pipe_through [:api, :graphql, :api_auth]
+    pipe_through [:api, :api_auth, :graphql]
 
     # plug Plug.Parsers,
     #      parsers: [:urlencoded, :multipart, :json, Absinthe.Plug.Parser],

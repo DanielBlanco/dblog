@@ -57,11 +57,18 @@ defmodule DblogWeb.Schema do
       resolve &Resolvers.Blog.create_post/3
     end
 
+    @desc "Logs an user in"
     field :login, type: :session do
       arg :email, non_null(:string)
       arg :password, non_null(:string)
 
       resolve &Resolvers.Accounts.login/2
+    end
+
+    @desc "Logs an user out"
+    field :logout, type: :string do
+      middleware Middleware.Authentication
+      resolve &Resolvers.Accounts.logout/2
     end
 
   end
